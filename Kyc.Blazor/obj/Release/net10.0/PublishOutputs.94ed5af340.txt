@@ -1,0 +1,7 @@
+c:\temp\blazor-publish\Kyc.Blazor.exe
+c:\temp\blazor-publish\appsettings.Development.json
+c:\temp\blazor-publish\appsettings.json
+c:\temp\blazor-publish\Kyc.Blazor.dll
+c:\temp\blazor-publish\Kyc.Blazor.runtimeconfig.json
+c:\temp\blazor-publish\Kyc.Blazor.pdb
+c:\temp\blazor-publish\Kyc.Blazor.deps.json

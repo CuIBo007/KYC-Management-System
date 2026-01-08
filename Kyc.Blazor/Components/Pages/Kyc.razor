@@ -1,0 +1,257 @@
+﻿@page "/kyc"
+@using Microsoft.AspNetCore.Components.Forms
+@using System.Net.Http.Json
+
+
+
+@inject IHttpClientFactory HttpClientFactory
+
+<div class="container mt-5">
+
+    <div class="card shadow-sm p-4 mb-4">
+        <h3 class="text-center mb-4">KYC Form</h3>
+
+        <!-- Add Model binding and OnValidSubmit -->
+        <EditForm Model="kycModel" OnValidSubmit="SaveKyc">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <div class="mb-3">
+                <label>Full Name</label>
+                <InputText class="form-control" @bind-Value="kycModel.FullName" />
+            </div>
+
+            <div class="mb-3">
+                <label>Phone</label>
+                <InputText class="form-control" @bind-Value="kycModel.PhoneNo" />
+            </div>
+
+            <div class="mb-3">
+                <label>Email</label>
+                <InputText class="form-control" @bind-Value="kycModel.Email" />
+            </div>
+
+            <div class="mb-3">
+                <label>Date of Birth</label>
+                <InputDate class="form-control" @bind-Value="kycModel.DateOfBirth" />
+            </div>
+
+            <!-- Province -->
+            <InputSelect TValue="int?"
+                         class="form-select mb-3"
+                         @bind-Value="kycModel.ProvinceId"
+                         @bind-Value:after="OnProvinceChanged">
+                <option value="">-- Select Province --</option>
+                @foreach (var p in Provinces)
+                {
+                    <option value="@p.ProvinceId">@p.ProvinceName</option>
+                }
+            </InputSelect>
+
+            <!-- District -->
+            <InputSelect TValue="int?"
+                         class="form-select mb-3"
+                         disabled="@(!kycModel.ProvinceId.HasValue)"
+                         @bind-Value="kycModel.DistrictId"
+                         @bind-Value:after="OnDistrictChanged">
+                <option value="">-- Select District --</option>
+                @foreach (var d in Districts)
+                {
+                    <option value="@d.DistrictId">@d.DistrictName</option>
+                }
+            </InputSelect>
+
+            <!-- Municipality -->
+            <InputSelect TValue="int?"
+                         class="form-select mb-3"
+                         disabled="@(!kycModel.DistrictId.HasValue)"
+                         @bind-Value="kycModel.MunicipalityId"
+                         @bind-Value:after="OnMunicipalityChanged">
+                <option value="">-- Select Municipality --</option>
+                @foreach (var m in Municipalities)
+                {
+                    <option value="@m.MunicipalityId">@m.MunicipalityName</option>
+                }
+            </InputSelect>
+
+            <!-- Ward -->
+            <InputSelect TValue="int?"
+                         class="form-select mb-3"
+                         disabled="@(!kycModel.MunicipalityId.HasValue)"
+                         @bind-Value="kycModel.WardId">
+                <option value="">-- Select Ward --</option>
+                @foreach (var w in Wards)
+                {
+                    <option value="@w.WardId">@w.WardNo</option>
+                }
+            </InputSelect>
+
+            <button type="submit" class="btn btn-primary">Save</button>
+        </EditForm>
+    </div>
+
+    <h4>Saved KYC Records</h4>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>DOB</th>
+                <th>Province</th>
+                <th>District</th>
+                <th>Municipality</th>
+                <th>Ward</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in KycList)
+            {
+                <tr>
+                    <td>@item.FullName</td>
+                    <td>@item.PhoneNo</td>
+                    <td>@item.Email</td>
+                    <td>@item.DateOfBirth?.ToString("yyyy-MM-dd")</td>
+                    <td>@ProvinceNames.GetValueOrDefault(item.ProvinceId ?? 0)</td>
+                    <td>@DistrictNames.GetValueOrDefault(item.DistrictId ?? 0)</td>
+                    <td>@MunicipalityNames.GetValueOrDefault(item.MunicipalityId ?? 0)</td>
+                    <td>@WardNames.GetValueOrDefault(item.WardId ?? 0)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
+
+@code {
+    private KycFormModel kycModel = new();
+
+    private List<ProvinceDto> Provinces = new();
+    private List<DistrictDto> Districts = new();
+    private List<MunicipalityDto> Municipalities = new();
+    private List<WardDto> Wards = new();
+
+    private List<KycRecordDto> KycList = new();
+
+    private Dictionary<int, string> ProvinceNames = new();
+    private Dictionary<int, string> DistrictNames = new();
+    private Dictionary<int, string> MunicipalityNames = new();
+    private Dictionary<int, string> WardNames = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var client = HttpClientFactory.CreateClient("KycApi");
+
+        // Load provinces only at start
+        Provinces = await client.GetFromJsonAsync<List<ProvinceDto>>("api/location/province") ?? new();
+        ProvinceNames = Provinces.ToDictionary(p => p.ProvinceId, p => p.ProvinceName);
+
+        // Load all districts/municipalities/wards for table display, but not for dropdowns
+        var allDistricts = await client.GetFromJsonAsync<List<DistrictDto>>("api/location/district") ?? new();
+        DistrictNames = allDistricts.ToDictionary(d => d.DistrictId, d => d.DistrictName);
+
+        var allMunicipalities = await client.GetFromJsonAsync<List<MunicipalityDto>>("api/location/municipality") ?? new();
+        MunicipalityNames = allMunicipalities.ToDictionary(m => m.MunicipalityId, m => m.MunicipalityName);
+
+        var allWards = await client.GetFromJsonAsync<List<WardDto>>("api/location/ward") ?? new();
+        WardNames = allWards.ToDictionary(w => w.WardId, w => w.WardNo.ToString());
+
+        await LoadKycList();
+    }
+
+    // --- Cascade Handlers ---
+    private async Task OnProvinceChanged()
+    {
+        kycModel.DistrictId = null;
+        kycModel.MunicipalityId = null;
+        kycModel.WardId = null;
+
+        Districts.Clear();
+        Municipalities.Clear();
+        Wards.Clear();
+
+        DistrictNames.Clear();
+        MunicipalityNames.Clear();
+        WardNames.Clear();
+
+        if (!kycModel.ProvinceId.HasValue) return;
+
+        var client = HttpClientFactory.CreateClient("KycApi");
+        Districts = await client.GetFromJsonAsync<List<DistrictDto>>(
+            $"api/location/district/{kycModel.ProvinceId.Value}"
+        ) ?? new();
+
+        DistrictNames = Districts.ToDictionary(d => d.DistrictId, d => d.DistrictName);
+    }
+
+    private async Task OnDistrictChanged()
+    {
+        kycModel.MunicipalityId = null;
+        kycModel.WardId = null;
+
+        Municipalities.Clear();
+        Wards.Clear();
+
+        MunicipalityNames.Clear();
+        WardNames.Clear();
+
+        if (!kycModel.DistrictId.HasValue) return;
+
+        var client = HttpClientFactory.CreateClient("KycApi");
+        Municipalities = await client.GetFromJsonAsync<List<MunicipalityDto>>(
+            $"api/location/municipalities/{kycModel.DistrictId.Value}"
+        ) ?? new();
+
+        MunicipalityNames = Municipalities.ToDictionary(m => m.MunicipalityId, m => m.MunicipalityName);
+    }
+
+    private async Task OnMunicipalityChanged()
+    {
+        kycModel.WardId = null;
+        Wards.Clear();
+        WardNames.Clear();
+
+        if (!kycModel.MunicipalityId.HasValue) return;
+
+        var client = HttpClientFactory.CreateClient("KycApi");
+        Wards = await client.GetFromJsonAsync<List<WardDto>>(
+            $"api/location/wards/{kycModel.MunicipalityId.Value}"
+        ) ?? new();
+
+        WardNames = Wards.ToDictionary(w => w.WardId, w => w.WardNo.ToString());
+    }
+
+    // --- Save KYC as JSON (fix 400) ---
+    private async Task SaveKyc()
+    {
+        var client = HttpClientFactory.CreateClient("KycApi");
+
+        // Use JSON instead of form-urlencoded
+        var response = await client.PostAsJsonAsync("api/kyc", kycModel);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            var errorMsg = await response.Content.ReadAsStringAsync();
+            Console.WriteLine("SaveKyc Error: " + errorMsg);
+            return;
+        }
+
+        await LoadKycList();
+
+        kycModel = new();
+        Districts.Clear();
+        Municipalities.Clear();
+        Wards.Clear();
+
+        DistrictNames.Clear();
+        MunicipalityNames.Clear();
+        WardNames.Clear();
+    }
+
+    private async Task LoadKycList()
+    {
+        var client = HttpClientFactory.CreateClient("KycApi");
+        KycList = await client.GetFromJsonAsync<List<KycRecordDto>>("api/kyc") ?? new();
+    }
+}

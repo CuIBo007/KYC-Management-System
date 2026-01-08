@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "wvOqZCM185Q=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Admin\\Desktop\\KYC_ASP.NET\\Kyc.Blazor\\Kyc.Blazor.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Admin\\.nuget\\packages\\microsoft.aspnetcore.app.internal.assets\\10.0.1\\microsoft.aspnetcore.app.internal.assets.10.0.1.nupkg.sha512"
+  ],
+  "logs": []
+}

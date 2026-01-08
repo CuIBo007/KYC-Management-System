@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+  <TargetFramework>net10.0</TargetFramework>
+  <Nullable>enable</Nullable>
+  <ImplicitUsings>enable</ImplicitUsings>
+  <BlazorDisableThrowNavigationException>true</BlazorDisableThrowNavigationException>
+  <RootNamespace>Kyc.Blazor</RootNamespace>
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <ProjectReference Include="..\Kyc.Shared\Kyc.Shared.csproj" />
+  </ItemGroup>
+
+</Project>

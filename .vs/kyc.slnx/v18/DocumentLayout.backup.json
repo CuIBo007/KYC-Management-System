@@ -1,0 +1,54 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Admin\\Desktop\\KYC_ASP.NET\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{7E017F72-7511-053C-CEDD-8F1D0129A1C1}|Kyc.Blazor\\Kyc.Blazor.csproj|c:\\users\\admin\\desktop\\kyc_asp.net\\kyc.blazor\\kyc.blazor.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{7E017F72-7511-053C-CEDD-8F1D0129A1C1}|Kyc.Blazor\\Kyc.Blazor.csproj|solutionrelative:kyc.blazor\\kyc.blazor.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DF1F4281-1B65-8CD9-EAC0-864F93182089}|kyc.Api\\kyc.Api.csproj|c:\\users\\admin\\desktop\\kyc_asp.net\\kyc.api\\kyc.api.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{DF1F4281-1B65-8CD9-EAC0-864F93182089}|kyc.Api\\kyc.Api.csproj|solutionrelative:kyc.api\\kyc.api.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Kyc.Blazor.csproj",
+              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\KYC_ASP.NET\\Kyc.Blazor\\Kyc.Blazor.csproj",
+              "RelativeDocumentMoniker": "Kyc.Blazor\\Kyc.Blazor.csproj",
+              "ToolTip": "C:\\Users\\Admin\\Desktop\\KYC_ASP.NET\\Kyc.Blazor\\Kyc.Blazor.csproj",
+              "RelativeToolTip": "Kyc.Blazor\\Kyc.Blazor.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-01-07T08:58:52.758Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "kyc.Api.csproj",
+              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\KYC_ASP.NET\\kyc.Api\\kyc.Api.csproj",
+              "RelativeDocumentMoniker": "kyc.Api\\kyc.Api.csproj",
+              "ToolTip": "C:\\Users\\Admin\\Desktop\\KYC_ASP.NET\\kyc.Api\\kyc.Api.csproj",
+              "RelativeToolTip": "kyc.Api\\kyc.Api.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-01-07T08:56:49.984Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

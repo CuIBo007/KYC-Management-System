@@ -1,0 +1,4 @@
+{
+    "dotnet.defaultSolution": "kyc.slnx",
+    "dataworkspace.excludedProjects": []
+}

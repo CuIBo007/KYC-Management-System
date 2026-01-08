@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="kyc.Api/kyc.Api.csproj" />
+  <Project Path="Kyc.Blazor/Kyc.Blazor.csproj" />
+  <Project Path="Kyc.Shared/Kyc.Shared.csproj" />
+</Solution>
