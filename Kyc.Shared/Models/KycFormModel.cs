@@ -6,19 +6,20 @@ public class KycFormModel
 {
     [Required(ErrorMessage = "FullName is required")]
     [MaxLength(200)]
-    public string? FullName { get; set; }
+    public string FullName { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "PhoneNo is required")]
     [MaxLength(50)]
-    public string? PhoneNo { get; set; }
+    [RegularExpression(@"^[0-9]*$", ErrorMessage = "Phone number must contain only digits")]
+    public string PhoneNo { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "Email is required")]
     [EmailAddress(ErrorMessage = "Invalid Email format")]
     [MaxLength(200)]
-    public string? Email { get; set; }
+    public string Email { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "Date of Birth is required")]
-    public DateTime? DateOfBirth { get; set; }
+    public DateTime DateOfBirth { get; set; } = DateTime.Now;
 
     [Range(1, int.MaxValue, ErrorMessage = "Province is required")]
     public int ProvinceId { get; set; }

@@ -12,5 +12,7 @@ public class Municipality
     public int DistrictId { get; set; }
     public District? District { get; set; }
 
+    public MunicipalityType Type { get; set; }
+
     public ICollection<Ward> Wards { get; set; } = [];
 }

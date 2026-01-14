@@ -115,6 +115,9 @@ namespace kyc.Api.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
                     b.HasKey("MunicipalityId");
 
                     b.HasIndex("DistrictId");

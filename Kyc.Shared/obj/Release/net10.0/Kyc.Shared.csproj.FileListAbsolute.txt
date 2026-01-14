@@ -1,0 +1,12 @@
+C:\Users\Admin\Desktop\KYC_ASP.NET\Kyc.Shared\bin\Release\net10.0\Kyc.Shared.deps.json
+C:\Users\Admin\Desktop\KYC_ASP.NET\Kyc.Shared\bin\Release\net10.0\Kyc.Shared.dll
+C:\Users\Admin\Desktop\KYC_ASP.NET\Kyc.Shared\bin\Release\net10.0\Kyc.Shared.pdb
+C:\Users\Admin\Desktop\KYC_ASP.NET\Kyc.Shared\obj\Release\net10.0\Kyc.Shared.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Admin\Desktop\KYC_ASP.NET\Kyc.Shared\obj\Release\net10.0\Kyc.Shared.AssemblyInfoInputs.cache
+C:\Users\Admin\Desktop\KYC_ASP.NET\Kyc.Shared\obj\Release\net10.0\Kyc.Shared.AssemblyInfo.cs
+C:\Users\Admin\Desktop\KYC_ASP.NET\Kyc.Shared\obj\Release\net10.0\Kyc.Shared.csproj.CoreCompileInputs.cache
+C:\Users\Admin\Desktop\KYC_ASP.NET\Kyc.Shared\obj\Release\net10.0\Kyc.Shared.sourcelink.json
+C:\Users\Admin\Desktop\KYC_ASP.NET\Kyc.Shared\obj\Release\net10.0\Kyc.Shared.dll
+C:\Users\Admin\Desktop\KYC_ASP.NET\Kyc.Shared\obj\Release\net10.0\refint\Kyc.Shared.dll
+C:\Users\Admin\Desktop\KYC_ASP.NET\Kyc.Shared\obj\Release\net10.0\Kyc.Shared.pdb
+C:\Users\Admin\Desktop\KYC_ASP.NET\Kyc.Shared\obj\Release\net10.0\ref\Kyc.Shared.dll

@@ -83,3 +83,8 @@ C:\Users\Admin\Desktop\KYC_ASP.NET\Kyc.Blazor\obj\Release\net10.0\refint\Kyc.Bla
 C:\Users\Admin\Desktop\KYC_ASP.NET\Kyc.Blazor\obj\Release\net10.0\Kyc.Blazor.pdb
 C:\Users\Admin\Desktop\KYC_ASP.NET\Kyc.Blazor\obj\Release\net10.0\Kyc.Blazor.genruntimeconfig.cache
 C:\Users\Admin\Desktop\KYC_ASP.NET\Kyc.Blazor\obj\Release\net10.0\ref\Kyc.Blazor.dll
+C:\Users\Admin\Desktop\KYC_ASP.NET\Kyc.Blazor\bin\Release\net10.0\Kyc.Shared.dll
+C:\Users\Admin\Desktop\KYC_ASP.NET\Kyc.Blazor\bin\Release\net10.0\Kyc.Shared.pdb
+C:\Users\Admin\Desktop\KYC_ASP.NET\Kyc.Blazor\obj\Release\net10.0\Kyc.Blazor.csproj.AssemblyReference.cache
+C:\Users\Admin\Desktop\KYC_ASP.NET\Kyc.Blazor\obj\Release\net10.0\Kyc.Blazor.sourcelink.json
+C:\Users\Admin\Desktop\KYC_ASP.NET\Kyc.Blazor\obj\Release\net10.0\Kyc.Blazor.csproj.Up2Date
