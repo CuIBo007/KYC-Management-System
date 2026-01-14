@@ -1,7 +1,10 @@
 ﻿@page "/kyc"
+@using Microsoft.AspNetCore.Components
 @using Microsoft.AspNetCore.Components.Forms
 @using System.Net.Http.Json
 @inject HttpClient Http
+@rendermode @(new InteractiveServerRenderMode())
+
 
 <PageTitle>KYC Form</PageTitle>
 
@@ -9,7 +12,7 @@
     <div class="card shadow-sm p-4 mb-4">
         <h3 class="text-center mb-4">KYC Form</h3>
 
-        <EditForm EditContext="_editContext!" OnValidSubmit="SaveKyc" FormName="KycForm">
+        <EditForm Model="@kycModel" OnValidSubmit="SaveKyc" @key="formKey">
             <DataAnnotationsValidator />
             <ValidationSummary />
 
@@ -44,8 +47,8 @@
             <!-- Province -->
             <div class="mb-3">
                 <label>Province</label>
-                <InputSelect TValue="int?" class="form-select" @bind-Value="ProvinceId">
-                    <option value="">-- Select Province --</option>
+                <InputSelect TValue="int" class="form-select" @bind-Value="ProvinceId">
+                    <option value="0">-- Select Province --</option>
                     @foreach (var p in Provinces)
                     {
                         <option value="@p.ProvinceId">@p.ProvinceName</option>
@@ -57,10 +60,10 @@
             <!-- District -->
             <div class="mb-3">
                 <label>District</label>
-                <InputSelect TValue="int?" class="form-select"
+                <InputSelect TValue="int" class="form-select"
                              @bind-Value="DistrictId"
-                             disabled="@(!ProvinceId.HasValue)">
-                    <option value="">-- Select District --</option>
+                             disabled="@(ProvinceId == 0)">
+                    <option value="0">-- Select District --</option>
                     @foreach (var d in Districts)
                     {
                         <option value="@d.DistrictId">@d.DistrictName</option>
@@ -72,10 +75,10 @@
             <!-- Municipality -->
             <div class="mb-3">
                 <label>Municipality</label>
-                <InputSelect TValue="int?" class="form-select"
+                <InputSelect TValue="int" class="form-select"
                              @bind-Value="MunicipalityId"
-                             disabled="@(!DistrictId.HasValue)">
-                    <option value="">-- Select Municipality --</option>
+                             disabled="@(DistrictId == 0)">
+                    <option value="0">-- Select Municipality --</option>
                     @foreach (var m in Municipalities)
                     {
                         <option value="@m.MunicipalityId">@m.MunicipalityName</option>
@@ -87,10 +90,10 @@
             <!-- Ward -->
             <div class="mb-3">
                 <label>Ward</label>
-                <InputSelect TValue="int?" class="form-select"
-                             @bind-Value="kycModel.WardId"
-                             disabled="@(!MunicipalityId.HasValue)">
-                    <option value="">-- Select Ward --</option>
+                <InputSelect TValue="int" class="form-select"
+                             @bind-Value="WardId"
+                             disabled="@(MunicipalityId == 0)">
+                    <option value="0">-- Select Ward --</option>
                     @foreach (var w in Wards)
                     {
                         <option value="@w.WardId">@w.WardNo</option>
@@ -138,7 +141,7 @@
 
 @code {
     private KycFormModel kycModel = new();
-    private EditContext? _editContext;
+    private Guid formKey = Guid.NewGuid();
 
     private List<ProvinceDto> Provinces = new();
     private List<DistrictDto> Districts = new();
@@ -156,50 +159,65 @@
        BLAZOR-APPROVED BINDINGS
        ------------------------- */
 
-    private int? ProvinceId
+    private int ProvinceId
     {
         get => kycModel.ProvinceId;
         set
         {
             if (kycModel.ProvinceId != value)
             {
+                Console.WriteLine($"ProvinceId -> {value}");
                 kycModel.ProvinceId = value;
                 _ = LoadDistricts();
             }
         }
     }
 
-    private int? DistrictId
+    private int DistrictId
     {
         get => kycModel.DistrictId;
         set
         {
             if (kycModel.DistrictId != value)
             {
+                Console.WriteLine($"DistrictId -> {value}");
                 kycModel.DistrictId = value;
                 _ = LoadMunicipalities();
             }
         }
     }
 
-    private int? MunicipalityId
+    private int MunicipalityId
     {
         get => kycModel.MunicipalityId;
         set
         {
             if (kycModel.MunicipalityId != value)
             {
+                Console.WriteLine($"MunicipalityId -> {value}");
                 kycModel.MunicipalityId = value;
                 _ = LoadWards();
             }
         }
     }
 
+    private int WardId
+    {
+        get => kycModel.WardId;
+        set
+        {
+            if (kycModel.WardId != value)
+            {
+                Console.WriteLine($"WardId -> {value}");
+                kycModel.WardId = value;
+            }
+        }
+    }
+
     protected override async Task OnInitializedAsync()
     {
-        _editContext = new EditContext(kycModel);
-
         Provinces = await Http.GetFromJsonAsync<List<ProvinceDto>>("api/location/province") ?? new();
+        Console.WriteLine($"Loaded provinces: {Provinces.Count}");
         ProvinceNames = Provinces.ToDictionary(p => p.ProvinceId, p => p.ProvinceName);
 
         var allDistricts = await Http.GetFromJsonAsync<List<DistrictDto>>("api/location/district") ?? new();
@@ -220,14 +238,15 @@
         Municipalities.Clear();
         Wards.Clear();
 
-        kycModel.DistrictId = null;
-        kycModel.MunicipalityId = null;
-        kycModel.WardId = null;
+        kycModel.DistrictId = 0;
+        kycModel.MunicipalityId = 0;
+        kycModel.WardId = 0;
 
-        if (ProvinceId.HasValue)
+        if (ProvinceId > 0)
         {
             Districts = await Http.GetFromJsonAsync<List<DistrictDto>>(
-                $"api/location/district/{ProvinceId.Value}") ?? new();
+                $"api/location/district/{ProvinceId}") ?? new();
+            Console.WriteLine($"Loaded districts: {Districts.Count}");
         }
 
         StateHasChanged();
@@ -238,13 +257,14 @@
         Municipalities.Clear();
         Wards.Clear();
 
-        kycModel.MunicipalityId = null;
-        kycModel.WardId = null;
+        kycModel.MunicipalityId = 0;
+        kycModel.WardId = 0;
 
-        if (DistrictId.HasValue)
+        if (DistrictId > 0)
         {
             Municipalities = await Http.GetFromJsonAsync<List<MunicipalityDto>>(
-                $"api/location/municipalities/{DistrictId.Value}") ?? new();
+                $"api/location/municipalities/{DistrictId}") ?? new();
+            Console.WriteLine($"Loaded municipalities: {Municipalities.Count}");
         }
 
         StateHasChanged();
@@ -253,12 +273,13 @@
     private async Task LoadWards()
     {
         Wards.Clear();
-        kycModel.WardId = null;
+        kycModel.WardId = 0;
 
-        if (MunicipalityId.HasValue)
+        if (MunicipalityId > 0)
         {
             Wards = await Http.GetFromJsonAsync<List<WardDto>>(
-                $"api/location/wards/{MunicipalityId.Value}") ?? new();
+                $"api/location/wards/{MunicipalityId}") ?? new();
+            Console.WriteLine($"Loaded wards: {Wards.Count}");
         }
 
         StateHasChanged();
@@ -266,21 +287,29 @@
 
     private async Task SaveKyc()
     {
-        if (!_editContext!.Validate())
-            return;
-
+        Console.WriteLine($"Model before POST: {System.Text.Json.JsonSerializer.Serialize(kycModel)}");
         var response = await Http.PostAsJsonAsync("api/kyc", kycModel);
         if (!response.IsSuccessStatusCode)
             return;
 
         await LoadKycList();
 
-        kycModel = new();
-        _editContext = new EditContext(kycModel);
+        // Reset form properly
+        kycModel.FullName = string.Empty;
+        kycModel.PhoneNo = string.Empty;
+        kycModel.Email = string.Empty;
+        kycModel.DateOfBirth = null;
+        kycModel.ProvinceId = 0;
+        kycModel.DistrictId = 0;
+        kycModel.MunicipalityId = 0;
+        kycModel.WardId = 0;
 
         Districts.Clear();
         Municipalities.Clear();
         Wards.Clear();
+
+        // Force clean EditContext
+        formKey = Guid.NewGuid();
     }
 
     private async Task LoadKycList()

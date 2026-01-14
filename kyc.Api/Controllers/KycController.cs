@@ -33,10 +33,10 @@ public class KycController : ControllerBase
             return BadRequest(errors);
         }
 
-        if (form.ProvinceId == null ||
-            form.DistrictId == null ||
-            form.MunicipalityId == null ||
-            form.WardId == null)
+        if (form.ProvinceId <= 0 ||
+            form.DistrictId <= 0 ||
+            form.MunicipalityId <= 0 ||
+            form.WardId <= 0)
         {
             return BadRequest("Complete address hierarchy is required.");
         }

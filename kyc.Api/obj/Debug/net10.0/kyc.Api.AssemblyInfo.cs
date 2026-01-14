@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("kyc.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2b01784afab7090ce126939096dae6b5a91bde16")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+10c3814bda8930f7de7db455979be89995880971")]
 [assembly: System.Reflection.AssemblyProductAttribute("kyc.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("kyc.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
