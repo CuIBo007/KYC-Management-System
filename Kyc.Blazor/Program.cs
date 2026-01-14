@@ -2,34 +2,38 @@
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Razor Components (Blazor Server)
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-builder.Services.AddHttpClient("KycApi", client =>
-{
-    client.BaseAddress = new Uri(builder.Configuration["KycApiBaseUrl"] ?? "http://localhost:5004");
-});
+// Antiforgery (REQUIRED)
+builder.Services.AddAntiforgery();
+
+// HttpClient for API calls
+builder.Services.AddScoped(sp =>
+    new HttpClient
+    {
+        BaseAddress = new Uri("http://localhost:5004/")
+    });
 
 var app = builder.Build();
 
-// Configure exception handling
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
 }
 else
 {
-    app.UseExceptionHandler("/Error");
+    app.UseExceptionHandler("/error");
     app.UseHsts();
 }
 
-// Middleware order is important
 app.UseStaticFiles();
 app.UseRouting();
+
 app.UseAntiforgery();
 
-// Map Blazor endpoints
-// MapRazorComponents with AddInteractiveServerRenderMode() automatically includes MapBlazorHub()
+
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 

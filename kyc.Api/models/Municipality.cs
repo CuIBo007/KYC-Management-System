@@ -7,7 +7,6 @@ public class Municipality
 {
     public int MunicipalityId { get; set; }
 
-    [Required, MaxLength(200)]
     public string MunicipalityName { get; set; } = null!;
 
     public int DistrictId { get; set; }

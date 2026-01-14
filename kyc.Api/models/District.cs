@@ -7,7 +7,6 @@ public class District
 {
     public int DistrictId { get; set; }
 
-    [Required, MaxLength(200)]
     public string DistrictName { get; set; } = null!;
 
     public int ProvinceId { get; set; }

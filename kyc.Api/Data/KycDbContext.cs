@@ -13,7 +13,7 @@ public class KycDbContext(DbContextOptions<KycDbContext> options) : DbContext(op
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        // -------------------- Province --------------------
+        //  Province 
         modelBuilder.Entity<Province>(b =>
         {
             b.ToTable("Province");
@@ -25,7 +25,7 @@ public class KycDbContext(DbContextOptions<KycDbContext> options) : DbContext(op
                 .HasMaxLength(200);
         });
 
-        // -------------------- District --------------------
+        //  District 
         modelBuilder.Entity<District>(b =>
         {
             b.ToTable("District");
@@ -42,7 +42,7 @@ public class KycDbContext(DbContextOptions<KycDbContext> options) : DbContext(op
                 .OnDelete(DeleteBehavior.Restrict);
         });
 
-        // -------------------- Municipality --------------------
+        //  Municipality 
         modelBuilder.Entity<Municipality>(b =>
         {
             b.ToTable("Municipality");
@@ -59,7 +59,7 @@ public class KycDbContext(DbContextOptions<KycDbContext> options) : DbContext(op
                 .OnDelete(DeleteBehavior.Restrict);
         });
 
-        // -------------------- Ward --------------------
+        //  Ward 
         modelBuilder.Entity<Ward>(b =>
         {
             b.ToTable("Ward");
@@ -78,7 +78,7 @@ public class KycDbContext(DbContextOptions<KycDbContext> options) : DbContext(op
                 .OnDelete(DeleteBehavior.Restrict);
         });
 
-        // -------------------- KYC Record --------------------
+        // - KYC Record 
         modelBuilder.Entity<KycRecordModel>(b =>
         {
             b.ToTable("KycRecord");
@@ -88,13 +88,13 @@ public class KycDbContext(DbContextOptions<KycDbContext> options) : DbContext(op
 
             b.Property(k => k.FullName)
                 .IsRequired()
-                .HasMaxLength(200);
+                .HasMaxLength(50);
 
             b.Property(k => k.PhoneNo)
                 .HasMaxLength(50);
 
             b.Property(k => k.Email)
-                .HasMaxLength(200);
+                .HasMaxLength(50);
 
             b.Property(k => k.CreatedDate)
                 .HasDefaultValueSql("SYSUTCDATETIME()");

@@ -17,15 +17,33 @@ public class KycController : ControllerBase
         _context = context;
     }
 
-    // ✅ Updated POST endpoint
     [HttpPost]
     public async Task<IActionResult> SaveKyc([FromBody] KycFormModel form)
     {
-        if (form == null) return BadRequest();
+        if (!ModelState.IsValid)
+        {
+            var errors = ModelState
+                .Where(x => x.Value!.Errors.Count > 0)
+                .Select(x => new
+                {
+                    Field = x.Key,
+                    Errors = x.Value!.Errors.Select(e => e.ErrorMessage)
+                });
+
+            return BadRequest(errors);
+        }
+
+        if (form.ProvinceId == null ||
+            form.DistrictId == null ||
+            form.MunicipalityId == null ||
+            form.WardId == null)
+        {
+            return BadRequest("Complete address hierarchy is required.");
+        }
 
         var model = new KycRecordModel
         {
-            FullName = form.FullName,
+            FullName = form.FullName!,
             PhoneNo = form.PhoneNo,
             Email = form.Email,
             DateOfBirth = form.DateOfBirth,
@@ -39,18 +57,41 @@ public class KycController : ControllerBase
         _context.KycRecord.Add(model);
         await _context.SaveChangesAsync();
 
-        return Ok(model);
+        var result = new KycRecordDto
+        {
+            KycId = model.KycId,
+            FullName = model.FullName,
+            PhoneNo = model.PhoneNo,
+            Email = model.Email,
+            DateOfBirth = model.DateOfBirth,
+            ProvinceId = model.ProvinceId,
+            DistrictId = model.DistrictId,
+            MunicipalityId = model.MunicipalityId,
+            WardId = model.WardId,
+            CreatedDate = model.CreatedDate
+        };
+
+        return Ok(result);
     }
 
     [HttpGet]
     public async Task<IActionResult> GetKycList()
     {
         var list = await _context.KycRecord
-            .Include(k => k.Province)
-            .Include(k => k.District)
-            .Include(k => k.Municipality)
-            .Include(k => k.Ward)
             .AsNoTracking()
+            .Select(k => new KycRecordDto
+            {
+                KycId = k.KycId,
+                FullName = k.FullName,
+                PhoneNo = k.PhoneNo,
+                Email = k.Email,
+                DateOfBirth = k.DateOfBirth,
+                ProvinceId = k.ProvinceId,
+                DistrictId = k.DistrictId,
+                MunicipalityId = k.MunicipalityId,
+                WardId = k.WardId,
+                CreatedDate = k.CreatedDate
+            })
             .ToListAsync();
 
         return Ok(list);

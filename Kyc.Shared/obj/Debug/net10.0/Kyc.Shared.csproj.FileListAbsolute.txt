@@ -5,6 +5,7 @@ C:\Users\Admin\Desktop\KYC_ASP.NET\Kyc.Shared\obj\Debug\net10.0\Kyc.Shared.Gener
 C:\Users\Admin\Desktop\KYC_ASP.NET\Kyc.Shared\obj\Debug\net10.0\Kyc.Shared.AssemblyInfoInputs.cache
 C:\Users\Admin\Desktop\KYC_ASP.NET\Kyc.Shared\obj\Debug\net10.0\Kyc.Shared.AssemblyInfo.cs
 C:\Users\Admin\Desktop\KYC_ASP.NET\Kyc.Shared\obj\Debug\net10.0\Kyc.Shared.csproj.CoreCompileInputs.cache
+C:\Users\Admin\Desktop\KYC_ASP.NET\Kyc.Shared\obj\Debug\net10.0\Kyc.Shared.sourcelink.json
 C:\Users\Admin\Desktop\KYC_ASP.NET\Kyc.Shared\obj\Debug\net10.0\Kyc.Shared.dll
 C:\Users\Admin\Desktop\KYC_ASP.NET\Kyc.Shared\obj\Debug\net10.0\refint\Kyc.Shared.dll
 C:\Users\Admin\Desktop\KYC_ASP.NET\Kyc.Shared\obj\Debug\net10.0\Kyc.Shared.pdb

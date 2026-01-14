@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using kyc.Api.Data;
-using kyc.Api.models;
 using Kyc.Shared.Models;
 
 namespace kyc.Api.Controllers;
@@ -17,65 +16,121 @@ public class LocationController : ControllerBase
         _context = context;
     }
 
-    // ===== Cascading GET Endpoints =====
+    // Cascading GET Endpoints 
 
     [HttpGet("province")]
-    public async Task<IActionResult> GetProvince()
+    public async Task<ActionResult<List<ProvinceDto>>> GetProvinces()
     {
-        var provinces = await _context.Province.AsNoTracking().ToListAsync();
+        var provinces = await _context.Province
+            .AsNoTracking()
+            .Select(p => new ProvinceDto
+            {
+                ProvinceId = p.ProvinceId,
+                ProvinceName = p.ProvinceName
+            })
+            .ToListAsync();
+
         return Ok(provinces);
     }
 
     [HttpGet("district/{provinceId}")]
-    public async Task<IActionResult> GetDistrict(int provinceId)
+    public async Task<ActionResult<List<DistrictDto>>> GetDistricts(int provinceId)
     {
         var districts = await _context.District
             .Where(d => d.ProvinceId == provinceId)
             .AsNoTracking()
+            .Select(d => new DistrictDto
+            {
+                DistrictId = d.DistrictId,
+                DistrictName = d.DistrictName,
+                ProvinceId = d.ProvinceId
+            })
             .ToListAsync();
+
         return Ok(districts);
     }
 
     [HttpGet("municipalities/{districtId}")]
-    public async Task<IActionResult> GetMunicipalities(int districtId)
+    public async Task<ActionResult<List<MunicipalityDto>>> GetMunicipalities(int districtId)
     {
         var municipalities = await _context.Municipality
             .Where(m => m.DistrictId == districtId)
             .AsNoTracking()
+            .Select(m => new MunicipalityDto
+            {
+                MunicipalityId = m.MunicipalityId,
+                MunicipalityName = m.MunicipalityName,
+                DistrictId = m.DistrictId
+            })
             .ToListAsync();
+
         return Ok(municipalities);
     }
 
     [HttpGet("wards/{municipalityId}")]
-    public async Task<IActionResult> GetWards(int municipalityId)
+    public async Task<ActionResult<List<WardDto>>> GetWards(int municipalityId)
     {
         var wards = await _context.Ward
             .Where(w => w.MunicipalityId == municipalityId)
             .AsNoTracking()
+            .Select(w => new WardDto
+            {
+                WardId = w.WardId,
+                WardNo = w.WardNo,
+                MunicipalityId = w.MunicipalityId
+            })
             .ToListAsync();
+
         return Ok(wards);
     }
 
-    // ===== "Get All" Endpoints for Dictionaries =====
+    // Get All" Endpoints for Dictionaries (for table display) 
 
     [HttpGet("district")]
-    public async Task<IActionResult> GetAllDistricts()
+    public async Task<ActionResult<List<DistrictDto>>> GetAllDistricts()
     {
-        var allDistricts = await _context.District.AsNoTracking().ToListAsync();
-        return Ok(allDistricts);
+        var districts = await _context.District
+            .AsNoTracking()
+            .Select(d => new DistrictDto
+            {
+                DistrictId = d.DistrictId,
+                DistrictName = d.DistrictName,
+                ProvinceId = d.ProvinceId
+            })
+            .ToListAsync();
+
+        return Ok(districts);
     }
 
     [HttpGet("municipality")]
-    public async Task<IActionResult> GetAllMunicipalities()
+    public async Task<ActionResult<List<MunicipalityDto>>> GetAllMunicipalities()
     {
-        var allMunicipalities = await _context.Municipality.AsNoTracking().ToListAsync();
-        return Ok(allMunicipalities);
+        var municipalities = await _context.Municipality
+            .AsNoTracking()
+            .Select(m => new MunicipalityDto
+            {
+                MunicipalityId = m.MunicipalityId,
+                MunicipalityName = m.MunicipalityName,
+                DistrictId = m.DistrictId
+            })
+            .ToListAsync();
+
+        return Ok(municipalities);
     }
 
     [HttpGet("ward")]
-    public async Task<IActionResult> GetAllWards()
+    public async Task<ActionResult<List<WardDto>>> GetAllWards()
     {
-        var allWards = await _context.Ward.AsNoTracking().ToListAsync();
-        return Ok(allWards);
+        var wards = await _context.Ward
+            .AsNoTracking()
+            .Select(w => new WardDto
+            {
+                WardId = w.WardId,
+                WardNo = w.WardNo,
+                MunicipalityId = w.MunicipalityId
+            })
+            .ToListAsync();
+
+        return Ok(wards);
     }
 }
